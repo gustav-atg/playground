@@ -1,0 +1,80 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Public API
+servers:
+  - url: http://example.com/public/v1
+paths:
+  /pets:
+    get:
+      summary: List all pets
+      operationId: all
+      tags:
+        - public-pets
+      responses:
+        200:
+          $ref: "#/components/responses/pet_array"
+        default:
+          $ref: "#/components/responses/error"
+  /pets/{id}:
+    get:
+      summary: Info for a specific pet
+      operationId: read
+      tags:
+        - public-pets
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          $ref: "#/components/responses/pet"
+        404:
+          $ref: "#/components/responses/not_found"
+        default:
+          $ref: "#/components/responses/error"
+components:
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      description: The id of the bag to retrieve
+      schema:
+        type: string
+        format: uuid
+  schemas:
+    pet:
+      $ref: "components/pet.yaml"
+    pet_array:
+      type: array
+      items:
+        $ref: "components/pet.yaml"
+    error:
+      $ref: "components/error.yaml"
+  responses:
+    pet:
+      description: Expected response to a valid request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/pet"
+    pet_array:
+      description: A paged array
+      content:
+        application/json:
+          schema:
+            #$ref: "#/components/schemas/pet_array"
+            type: array
+            items:
+              $ref: "components/pet.yaml"
+    error:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "components/error.yaml"
+    not_found:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: "components/error.yaml"

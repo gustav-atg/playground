@@ -1,0 +1,14 @@
+{
+  "modelNameSuffix": "Dto",
+  "dateLibrary": "java8",
+  "reactive": true,
+  "useSpringBoot3": true,
+  "useTags": true,
+  "delegatePattern": true,
+  "useBeanValidation": true,
+  "interfaceOnly": true,
+  "hideGenerationTimestamp": true,
+  "serviceInterface": false,
+  "openApiNullable": false,
+  "enumPropertyNaming" : "UPPERCASE"
+}

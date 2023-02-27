@@ -1,0 +1,81 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Private API
+servers:
+  - url: http://example.com/private/v1
+paths:
+  /pets:
+    get:
+      summary: List all pets
+      operationId: all
+      tags:
+        - private-pets
+      responses:
+        200:
+          $ref: "public.openapi.yaml#/components/responses/pet_array"
+        default:
+          $ref: "public.openapi.yaml#/components/responses/error"
+    post:
+      summary: Create a new pet
+      operationId: save
+      tags:
+        - private-pets
+      requestBody:
+        $ref: "#/components/requestBodies/pet"
+      responses:
+        200:
+          $ref: "public.openapi.yaml#/components/responses/pet"
+        default:
+          $ref: "public.openapi.yaml#/components/responses/error"
+  /pets/{id}:
+    get:
+      summary: Info for a specific pet
+      operationId: read
+      tags:
+        - private-pets
+      parameters:
+        - $ref: "public.openapi.yaml#/components/parameters/id"
+      responses:
+        200:
+          $ref: "public.openapi.yaml#/components/responses/pet"
+        404:
+          $ref: "public.openapi.yaml#/components/responses/not_found"
+        default:
+          $ref: "public.openapi.yaml#/components/responses/error"
+    post:
+      summary: Update an existing pet
+      operationId: update
+      tags:
+        - private-pets
+      parameters:
+        - $ref: "public.openapi.yaml#/components/parameters/id"
+      requestBody:
+        $ref: "#/components/requestBodies/pet"
+      responses:
+        200:
+          $ref: "public.openapi.yaml#/components/responses/pet"
+        404:
+          $ref: "public.openapi.yaml#/components/responses/not_found"
+        default:
+          $ref: "public.openapi.yaml#/components/responses/error"
+    summary: Update an existing pet
+    delete:
+      operationId: delete
+      tags:
+        - private-pets
+      parameters:
+        - $ref: "public.openapi.yaml#/components/parameters/id"
+      responses:
+        204:
+          description: The resource was deleted successfully
+        default:
+          $ref: "public.openapi.yaml#/components/responses/error"
+components:
+  requestBodies:
+    pet:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "public.openapi.yaml#/components/responses/pet"
